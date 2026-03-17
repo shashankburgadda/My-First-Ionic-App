@@ -1,20 +1,37 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+<ion-header >
+  <ion-toolbar color="primary" >
+    <ion-title class="title" >Task Manager</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <ion-item>
+    <ion-input placeholder="Enter task" [(ngModel)]="newTask"></ion-input>
+    <ion-button (click)="addTask()" color="success">Add</ion-button>
+  </ion-item>
+
+  <ion-segment [(ngModel)]="filter" class="ion-margin">
+    <ion-segment-button value="all">
+      All
+    </ion-segment-button>
+  
+    <ion-segment-button value="active">
+      Active       <ion-badge color="warning" *ngIf="activeCount > 0">{{ activeCount }}</ion-badge>
+    </ion-segment-button>
+  
+    <ion-segment-button value="completed">
+      Completed  <ion-badge color="success" *ngIf="completedCount > 0">{{ completedCount }}</ion-badge>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let task of filteredTasks; let i = index">
+      <ion-item>
+        <ion-label [ngClass]="{'completed': task.completed}">{{ task.title }}</ion-label>
+        <ion-checkbox slot="start" [(ngModel)]="task.completed" (ionChange)="saveTasks()"></ion-checkbox>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+
 </ion-content>
